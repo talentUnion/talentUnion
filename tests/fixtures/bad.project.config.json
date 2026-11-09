@@ -1,0 +1,13 @@
+{
+  "name": "X",
+  "githubLogin": "X",
+  "titlePage": {
+    "role": "r",
+    "fields": "f"
+  },
+  "now": { "name": "N", "lines": ["l"], "url": "https://example.com" },
+  "projects": [
+    { "name": "P", "description": "d", "year": "2026", "emblem": "signal", "url": "https://example.com" }
+  ],
+  "colophon": { "note": "n", "addresses": ["a"] }
+}

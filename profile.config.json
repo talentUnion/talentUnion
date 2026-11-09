@@ -1,0 +1,53 @@
+{
+  "name": "James Carter",
+  "githubLogin": "topCoder-james",
+  "titlePage": {
+    "role": "Software Engineer,  AI Developer,  Builder.",
+    "fields": "Python  ·  Next.js  ·  AI engineering"
+  },
+  "now": {
+    "name": "AI Systems",
+    "lines": [
+      "Building AI-powered applications and intelligent workflows",
+      "with Python, Next.js, LLMs, and modern backend systems."
+    ],
+    "url": "#"
+  },
+  "projects": [
+    {
+      "name": "AI Workflow Engine",
+      "description": "Automate complex business processes with AI agents, tool calling, and intelligent workflows.",
+      "language": "Python",
+      "year": "2026",
+      "emblem": "signal",
+      "url": "#"
+    },
+    {
+      "name": "SaaS Platform",
+      "description": "Building modern SaaS apps with scalable APIs, authentication, and database-driven features",
+      "language": "Next.js · TypeScript",
+      "year": "2023",
+      "emblem": "grid",
+      "url": "#"
+    },
+    {
+      "name": "Paper Assistant",
+      "description": "Question answering over documents using LLMs, vector search, and context-aware retrieval.",
+      "language": "Python · RAG",
+      "year": "2024",
+      "emblem": "folio",
+      "url": "#"
+    },
+    {
+      "name": "AI Automation",
+      "description": "Connect APIs and AI models to automate repetitive tasks and streamline business operations.",
+      "language": "Python · AI",
+      "year": "2025",
+      "emblem": "tesseract",
+      "url": "#"
+    }
+  ],
+  "colophon": {
+    "note": "Exploring AI, building software, and turning ideas into working systems."
+  }
+}
