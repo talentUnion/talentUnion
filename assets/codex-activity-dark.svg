@@ -9,7 +9,7 @@
     <line x1="20.5" y1="20.5" x2="38" y2="38" stroke="#4A443A"/>
     <circle cx="29.689999999999998" cy="29.689999999999998" r="1" fill="#A58466" stroke="none"/>
   </g>
-  <text x="440" y="132" font-family="IBM Plex Serif" font-size="40" fill="#E8E3DA" text-anchor="middle" font-weight="500" letter-spacing="10">JAMESCARTER</text>
+  <text x="440" y="132" font-family="IBM Plex Serif" font-size="40" fill="#E8E3DA" text-anchor="middle" font-weight="500" letter-spacing="10">ADALBERTO</text>
   <line x1="412" y1="162" x2="468" y2="162" stroke="#C67A57" stroke-width="1"/>
   <text x="440" y="202" font-family="IBM Plex Serif" font-size="16.5" fill="#E8E3DA" text-anchor="middle">Software Engineer,  AI Developer,  Builder.</text>
   <text x="440" y="230" font-family="IBM Plex Serif" font-size="15.5" fill="#9C968B" text-anchor="middle" font-style="italic">Python  ·  Next.js  ·  AI engineering</text>

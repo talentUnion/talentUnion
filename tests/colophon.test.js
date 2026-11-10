@@ -1,4 +1,9 @@
-const { renderColophon, PALETTES } = require('../src/svg/colophon');
+const {
+  renderColophon,
+  renderCodexSlices,
+  renderColophonAssets,
+  PALETTES,
+} = require('../src/svg/colophon');
 const { loadConfig } = require('../src/config');
 
 function fixtureWeeks() {
@@ -27,6 +32,14 @@ test('renders both themes with the correct palette', () => {
   expect(dark).toContain(PALETTES.dark.rubric);
   expect(light).not.toContain(PALETTES.dark.paper);
   expect(() => renderColophon(cfg, [], { theme: 'sepia' })).toThrow(/Unknown theme/);
+});
+
+test('renders a plate and slices from one shared page', () => {
+  const weeks = fixtureWeeks();
+  const opts = { theme: 'dark', embedFonts: false };
+  const assets = renderColophonAssets(cfg, weeks, opts);
+  expect(assets.plate).toBe(renderColophon(cfg, weeks, opts));
+  expect(assets.slices).toEqual(renderCodexSlices(cfg, weeks, opts));
 });
 
 test('title page sets the name in caps with a plain-figure imprint', () => {

@@ -226,7 +226,10 @@ function buildPage(cfg, weeks, opts = {}) {
  * @param {object} opts    { theme: 'light'|'dark', embedFonts, fontsDir }
  */
 function renderColophon(cfg, weeks, opts = {}) {
-  const { inner, height } = buildPage(cfg, weeks, opts);
+  return renderColophonPage(buildPage(cfg, weeks, opts));
+}
+
+function renderColophonPage({ inner, height }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${height}" viewBox="0 0 ${W} ${height}" role="img">
   ${inner}
 </svg>`;
@@ -240,7 +243,10 @@ function renderColophon(cfg, weeks, opts = {}) {
  * Returns [{ key, svg, url, project? }]; url is null for unlinked slices.
  */
 function renderCodexSlices(cfg, weeks, opts = {}) {
-  const { inner, bands } = buildPage(cfg, weeks, opts);
+  return renderCodexSlicesPage(cfg, buildPage(cfg, weeks, opts));
+}
+
+function renderCodexSlicesPage(cfg, { inner, bands }) {
   const urlFor = (band) => {
     if (band.link === 'site') return (cfg.links && cfg.links[0] && cfg.links[0].url) || `https://github.com/${cfg.githubLogin}`;
     if (band.link === 'now') return cfg.now.url || null;
@@ -258,4 +264,12 @@ function renderCodexSlices(cfg, weeks, opts = {}) {
   }));
 }
 
-module.exports = { renderColophon, renderCodexSlices, buildPage, PALETTES };
+function renderColophonAssets(cfg, weeks, opts = {}) {
+  const page = buildPage(cfg, weeks, opts);
+  return {
+    plate: renderColophonPage(page),
+    slices: renderCodexSlicesPage(cfg, page),
+  };
+}
+
+module.exports = { renderColophon, renderCodexSlices, renderColophonAssets, buildPage, PALETTES };

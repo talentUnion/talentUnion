@@ -33,11 +33,24 @@ test('generate writes plates and all slices when the fetch succeeds', async () =
 test('generate keeps existing outputs when the fetch fails', async () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'assets-'));
   const cfg = loadConfig();
-  for (const f of expectedFiles(cfg)) fs.writeFileSync(path.join(out, f), `<svg>OLD-${f}</svg>`);
+  for (const f of expectedFiles(cfg)) {
+    fs.writeFileSync(path.join(out, f), `<svg>${cfg.name.toUpperCase()} OLD-${f}</svg>`);
+  }
   await generate({ cfg, outDir: out, token: 't', fetchWeeks: async () => { throw new Error('down'); } });
   for (const f of expectedFiles(cfg)) {
-    expect(fs.readFileSync(path.join(out, f), 'utf8')).toBe(`<svg>OLD-${f}</svg>`);
+    expect(fs.readFileSync(path.join(out, f), 'utf8')).toBe(`<svg>${cfg.name.toUpperCase()} OLD-${f}</svg>`);
   }
+});
+
+test('generate refreshes a stale profile offline when the contribution fetch fails', async () => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'assets-'));
+  const cfg = loadConfig();
+  for (const f of expectedFiles(cfg)) fs.writeFileSync(path.join(out, f), `<svg>OLD-${f}</svg>`);
+  await generate({ cfg, outDir: out, token: 't', fetchWeeks: async () => { throw new Error('down'); } });
+  const plate = fs.readFileSync(path.join(out, FILES.light), 'utf8');
+  expect(plate).toContain(cfg.name.toUpperCase());
+  expect(plate).toContain('No activity data yet.');
+  expect(fs.readFileSync(path.join(out, sliceFile('head', 'dark')), 'utf8')).toContain(cfg.name.toUpperCase());
 });
 
 test('generate renders the offline fallback when outputs are missing', async () => {

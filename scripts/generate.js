@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 
 const { loadConfig } = require('../src/config');
-const { renderColophon, renderCodexSlices } = require('../src/svg/colophon');
+const { renderColophonAssets } = require('../src/svg/colophon');
+const { escapeXml } = require('../src/svg/xml');
 const { fetchContributionWeeks } = require('../src/data/contributions');
 
 const THEMES = ['light', 'dark'];
@@ -20,23 +21,35 @@ function write(outDir, file, svg) {
 async function generate({ cfg, outDir, token, fetchWeeks }) {
   fs.mkdirSync(outDir, { recursive: true });
 
-  const sliceKeys = renderCodexSlices(cfg, [], { embedFonts: false }).map((s) => s.key);
+  const sliceKeys = [
+    'head', 'now', 'contents',
+    ...cfg.projects.map((_, i) => `work-${i + 1}`),
+    'activity', 'foot',
+  ];
   const expected = THEMES.flatMap((t) => [FILES[t], ...sliceKeys.map((k) => sliceFile(k, t))]);
 
   let weeks = [];
   try {
     weeks = await (fetchWeeks || fetchContributionWeeks)(cfg.githubLogin, token);
   } catch (e) {
-    if (expected.every((f) => fs.existsSync(path.join(outDir, f)))) {
-      console.warn(`Contribution fetch failed (${e.message}); keeping existing plates and slices`);
-      return;
+    const outputsExist = expected.every((f) => fs.existsSync(path.join(outDir, f)));
+    if (outputsExist) {
+      const currentName = escapeXml(cfg.name.toUpperCase());
+      const profileIsCurrent = expected.every((f) => (
+        fs.readFileSync(path.join(outDir, f), 'utf8').includes(currentName)
+      ));
+      if (profileIsCurrent) {
+        console.warn(`Contribution fetch failed (${e.message}); keeping existing plates and slices`);
+        return;
+      }
     }
     console.warn(`Contribution fetch failed (${e.message}); rendering without activity data`);
   }
 
   for (const theme of THEMES) {
-    write(outDir, FILES[theme], renderColophon(cfg, weeks, { theme }));
-    for (const slice of renderCodexSlices(cfg, weeks, { theme })) {
+    const { plate, slices } = renderColophonAssets(cfg, weeks, { theme });
+    write(outDir, FILES[theme], plate);
+    for (const slice of slices) {
       write(outDir, sliceFile(slice.key, theme), slice.svg);
     }
   }
