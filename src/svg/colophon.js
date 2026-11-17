@@ -2,7 +2,7 @@ const { fontDefs } = require('../fonts');
 const { escapeXml } = require('./xml');
 const { measureSerif500, measureMono } = require('./metrics');
 const { aggregateWeeks, rangeCaption } = require('../data/weekly');
-const { EMBLEMS, orbit, cornerMarks } = require('./diagrams');
+const { EMBLEMS, aiSystems, cornerMarks } = require('./diagrams');
 
 // One plate, three inks: text ink, a sepia drawing ink for the figures, and
 // rubric red reserved for typography. The dark paper is deliberately warmer
@@ -68,7 +68,7 @@ function renderNow(cfg, pal) {
   cfg.now.lines.forEach((line, i) => {
     parts.push(serif(140, NOW_LABEL_Y + 72 + i * 24, 15, pal.desc, escapeXml(line)));
   });
-  parts.push(orbit(548, NOW_LABEL_Y + 12, pal));
+  parts.push(aiSystems(548, NOW_LABEL_Y + 12, pal));
   return parts.join('\n  ');
 }
 

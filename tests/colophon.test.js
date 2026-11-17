@@ -55,14 +55,28 @@ test('the now section presents the current work with its figure', () => {
   expect(svg).toContain(`>${cfg.now.name}<`);
   expect(svg).toContain('in progress');
   cfg.now.lines.forEach((l) => expect(svg).toContain(l.replace(/'/g, '&apos;').replace(/—/g, '—')));
+  expect(svg).toContain('<rect x="87" y="34" width="36" height="36" rx="8"/>');
+  expect(svg).toContain('<circle cx="176" cy="34" r="5"/>');
+  expect(svg).not.toContain('e = 0.94');
 });
 
 test('every project carries its marginal emblem and the page its marks', () => {
   const svg = renderColophon(cfg, fixtureWeeks(), { embedFonts: false });
-  // four emblems + orbit figure draw in the sepia ink
+  // Four project emblems and the current-work diagram draw in sepia ink.
   const sepia = (svg.match(/stroke="#8A6A48"/g) || []).length;
   expect(sepia).toBeGreaterThanOrEqual(5);
   expect(svg).toContain('f. 1 r');
+});
+
+test('project emblems match workflow, platform, paper retrieval, and automation', () => {
+  const svg = renderColophon(cfg, fixtureWeeks(), { embedFonts: false });
+  expect(cfg.projects.map((project) => project.emblem)).toEqual([
+    'workflow', 'platform', 'paperAssistant', 'automation',
+  ]);
+  expect(svg).toContain('M 14 25 L 19 27.5 L 14 30 L 9 27.5 Z');
+  expect(svg).toContain('M 30 12 L 49 21.5 L 30 31 L 11 21.5 Z');
+  expect(svg).toContain('M 24 12 L 38 19 L 24 26 L 10 19 Z');
+  expect(svg).toContain('M 15 12 H 42 L 50 20 V 28 M 45 48 H 18 L 10 40 V 32');
 });
 
 test('contents lists every project with numeral, leader, detail, and description', () => {

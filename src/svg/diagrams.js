@@ -14,163 +14,125 @@ function emblem(cx, cy, inner) {
   return `<g transform="translate(${cx - 30} ${cy - 30})" fill="none" stroke-linecap="round" stroke-linejoin="round">${inner}</g>`;
 }
 
-// Signal Scout — a source located by its field: quarter-fan of arcs with a
-// measured bearing ray.
-function signal(cx, cy, pal) {
+function isoBox(cx, top, width, depth) {
+  const half = width / 2;
+  const quarter = width / 4;
+  const mid = top + quarter;
+  const bottom = top + half;
+  return `<path d="M ${cx} ${top} L ${cx + half} ${mid} L ${cx} ${bottom} L ${cx - half} ${mid} Z"/>
+    <path d="M ${cx - half} ${mid} V ${mid + depth} L ${cx} ${bottom + depth} V ${bottom} Z"/>
+    <path d="M ${cx + half} ${mid} V ${mid + depth} L ${cx} ${bottom + depth} V ${bottom} Z"/>`;
+}
+
+// Workflow engine — a trigger cube routes through an agent to tool cubes.
+function workflow(cx, cy, pal) {
   return emblem(cx, cy, `
     <g stroke="${pal.construction}" stroke-width="1">
-      <line x1="15.81" y1="38.51" x2="16.94" y2="17.04"/>
-      <line x1="21.49" y1="44.19" x2="42.96" y2="43.06"/>
+      <path d="M 18 30 L 21 29 M 38 21 L 42 17 M 38 31 L 42 44"/>
     </g>
     <g stroke="${pal.sepia}" stroke-width="1.1">
-      <path d="M 15.97 35.51 A 9 9 0 0 1 24.49 44.03"/>
-      <path d="M 16.39 27.52 A 17 17 0 0 1 32.48 43.61"/>
-      <path d="M 16.81 19.53 A 25 25 0 0 1 40.47 43.19"/>
-      <line x1="18.68" y1="41.32" x2="35.65" y2="24.35"/>
-      <line x1="35.65" y1="24.35" x2="34.25" y2="27.66"/>
-      <line x1="35.65" y1="24.35" x2="32.34" y2="25.75"/>
-      <line x1="23.42" y1="34.03" x2="25.97" y2="36.58"/>
+      ${isoBox(14, 25, 10, 6)}
+      ${isoBox(30, 16, 18, 10)}
+      ${isoBox(46, 11, 9, 5)}
+      ${isoBox(46, 42.5, 9, 5)}
+      <path d="M 27 21 L 30 18 L 33 21 L 30 24 Z"/>
+      <line x1="30" y1="24" x2="30" y2="28"/>
+      <circle cx="30" cy="29" r="1.3" fill="${pal.sepia}"/>
     </g>
-    <circle cx="15.5" cy="44.5" r="1.7" fill="${pal.sepia}" stroke="none"/>
   `);
 }
 
-// Data Quality Agent — an inspected table: 4x4 grid, one hatched cell, a
-// caliper measuring the flagged row.
-function grid(cx, cy, pal) {
+// SaaS platform — a tiled application dashboard on a raised platform.
+function platform(cx, cy, pal) {
   return emblem(cx, cy, `
     <g stroke="${pal.sepia}" stroke-width="1.1">
-      <path d="M 13 16 H 41 V 44 H 13 Z"/>
-      <line x1="20" y1="16" x2="20" y2="44"/>
-      <line x1="13" y1="23" x2="41" y2="23"/>
-      <line x1="27" y1="16" x2="27" y2="44"/>
-      <line x1="13" y1="30" x2="41" y2="30"/>
-      <line x1="34" y1="16" x2="34" y2="44"/>
-      <line x1="13" y1="37" x2="41" y2="37"/>
-      <line x1="27.5" y1="26.61" x2="30.61" y2="23.5"/>
-      <line x1="27.72" y1="29.5" x2="33.5" y2="23.72"/>
-      <line x1="30.83" y1="29.5" x2="33.5" y2="26.83"/>
-      <line x1="46.5" y1="21" x2="46.5" y2="32"/>
-      <line x1="45" y1="24.5" x2="48" y2="21.5"/>
-      <line x1="45" y1="31.5" x2="48" y2="28.5"/>
-    </g>
-    <g stroke="${pal.construction}" stroke-width="1">
-      <line x1="16.5" y1="12.2" x2="16.5" y2="14.2"/>
-      <line x1="23.5" y1="12.2" x2="23.5" y2="14.2"/>
-      <line x1="30.5" y1="12.2" x2="30.5" y2="14.2"/>
-      <line x1="37.5" y1="12.2" x2="37.5" y2="14.2"/>
-      <line x1="41.8" y1="23" x2="48.5" y2="23"/>
-      <line x1="41.8" y1="30" x2="48.5" y2="30"/>
+      ${isoBox(30, 12, 38, 10)}
+      <path d="M 30 12 L 46 20 L 30 28 L 14 20 Z"/>
+      <path d="M 30 12 L 38 16 L 30 20 L 22 16 Z"/>
+      <path d="M 38 16 L 46 20 L 38 24 L 30 20 Z"/>
+      <path d="M 22 16 L 30 20 L 22 24 L 14 20 Z"/>
+      <path d="M 30 20 L 38 24 L 30 28 L 22 24 Z"/>
+      <path d="M 27 15 L 30 16.5 L 33 15"/>
+      <path d="M 35 19 L 38 20.5 L 41 19"/>
+      <path d="M 19 19 L 22 20.5 L 25 19"/>
+      <path d="M 27 23 L 30 24.5 L 33 23"/>
+      <line x1="20" y1="31" x2="27" y2="34.5"/>
+      <line x1="33" y1="34.5" x2="40" y2="31"/>
     </g>
   `);
 }
 
-// Ask My Paper — a folio with a bracketed passage and an annotation leader
-// ending in an asterisk; hatched ground shadow.
-function folio(cx, cy, pal) {
+// Paper Assistant — a document stack routes a selected passage to an answer.
+function paperAssistant(cx, cy, pal) {
   return emblem(cx, cy, `
     <g stroke="${pal.sepia}" stroke-width="1.1">
-      <path d="M 17 10.5 H 33 L 39 16.5 V 47.5 H 17 Z"/>
-      <line x1="33" y1="10.5" x2="33" y2="16.5"/>
-      <line x1="33" y1="16.5" x2="39" y2="16.5"/>
-      <line x1="33" y1="14.1" x2="35.4" y2="16.5"/>
-      <line x1="33" y1="11.9" x2="37.6" y2="16.5"/>
-      <line x1="21" y1="17" x2="33.5" y2="17"/>
-      <line x1="21" y1="21" x2="35" y2="21"/>
-      <line x1="21" y1="25" x2="35" y2="25"/>
-      <line x1="21" y1="29" x2="34.5" y2="29"/>
-      <line x1="21" y1="33" x2="35" y2="33"/>
-      <line x1="21" y1="37" x2="33" y2="37"/>
-      <line x1="21" y1="41" x2="28" y2="41"/>
-      <line x1="19" y1="23.2" x2="19" y2="30.8"/>
-      <line x1="19" y1="23.2" x2="20.6" y2="23.2"/>
-      <line x1="19" y1="30.8" x2="20.6" y2="30.8"/>
-      <line x1="18.2" y1="27" x2="13.2" y2="38.2"/>
-      <line x1="12.4" y1="39.3" x2="12.4" y2="44.3"/>
-      <line x1="10.23" y1="40.55" x2="14.58" y2="43.05"/>
-      <line x1="10.23" y1="43.05" x2="14.58" y2="40.55"/>
-      <line x1="24" y1="50.1" x2="26.2" y2="48"/>
-      <line x1="28" y1="50.1" x2="30.2" y2="48"/>
-      <line x1="32" y1="50.1" x2="34.2" y2="48"/>
-      <line x1="36" y1="50.1" x2="38.2" y2="48"/>
-      <line x1="40" y1="50.1" x2="42.2" y2="48"/>
+      ${isoBox(24, 12, 28, 17)}
+      <path d="M 24 12 L 38 19 L 24 26 L 10 19 Z"/>
+      <path d="M 24 12 V 26"/>
+      <path d="M 13 19 L 22 23.5 M 16 17.5 L 22 20.5"/>
+      <path d="M 35 20.5 L 29 23.5 M 35 17.5 L 29 20.5"/>
+      <path d="M 16 31 L 23 34.5 M 16 35 L 23 38.5"/>
+      <path d="M 35 29 L 42 32.5 V 40 L 35 36.5 Z"/>
+      <path d="M 37 32 L 40 33.5 M 37 35 L 40 36.5"/>
+      <path d="M 38 43 L 42 45 L 46 43"/>
+      <path d="M 40 27 H 45 L 49 29 V 35"/>
+      <path d="M 49 35 L 46 32 M 49 35 L 45 36"/>
     </g>
   `);
 }
 
-// Tesseract — the 4-cube in cavalier projection: inner cube is the outer
-// scaled 0.5 about the marked projection center, rays shown.
-function tesseract(cx, cy, pal) {
+// AI automation — a processing cube inside a square, repeating route.
+function automation(cx, cy, pal) {
   return emblem(cx, cy, `
     <g stroke="${pal.construction}" stroke-width="1">
-      <line x1="22.125" y1="37.75" x2="30.25" y2="29.5"/>
-      <line x1="33.125" y1="37.75" x2="30.25" y2="29.5"/>
-      <line x1="33.125" y1="26.75" x2="30.25" y2="29.5"/>
-      <line x1="22.125" y1="26.75" x2="30.25" y2="29.5"/>
+      <path d="M 15 12 H 42 L 50 20 V 28 M 45 48 H 18 L 10 40 V 32"/>
     </g>
     <g stroke="${pal.sepia}" stroke-width="1.1">
-      <path d="M 14 46 L 36 46 L 36 24 L 14 24 Z"/>
-      <path d="M 24.5 35 L 46.5 35 L 46.5 13 L 24.5 13 Z"/>
-      <line x1="14" y1="46" x2="24.5" y2="35"/>
-      <line x1="36" y1="46" x2="46.5" y2="35"/>
-      <line x1="36" y1="24" x2="46.5" y2="13"/>
-      <line x1="14" y1="24" x2="24.5" y2="13"/>
-      <path d="M 22.125 37.75 L 33.125 37.75 L 33.125 26.75 L 22.125 26.75 Z"/>
-      <path d="M 27.375 32.25 L 38.375 32.25 L 38.375 21.25 L 27.375 21.25 Z"/>
-      <line x1="22.125" y1="37.75" x2="27.375" y2="32.25"/>
-      <line x1="33.125" y1="37.75" x2="38.375" y2="32.25"/>
-      <line x1="33.125" y1="26.75" x2="38.375" y2="21.25"/>
-      <line x1="22.125" y1="26.75" x2="27.375" y2="21.25"/>
-      <line x1="14" y1="46" x2="22.125" y2="37.75"/>
-      <line x1="36" y1="46" x2="33.125" y2="37.75"/>
-      <line x1="36" y1="24" x2="33.125" y2="26.75"/>
-      <line x1="14" y1="24" x2="22.125" y2="26.75"/>
-      <line x1="24.5" y1="35" x2="27.375" y2="32.25"/>
-      <line x1="46.5" y1="35" x2="38.375" y2="32.25"/>
-      <line x1="46.5" y1="13" x2="38.375" y2="21.25"/>
-      <line x1="24.5" y1="13" x2="27.375" y2="21.25"/>
+      <path d="M 50 28 L 46 24 M 50 28 L 45 29"/>
+      <path d="M 10 32 L 14 36 M 10 32 L 15 31"/>
+      ${isoBox(30, 18, 22, 12)}
+      <path d="M 27 27 L 30 25 L 33 27 L 30 29 Z"/>
+      <line x1="30" y1="29" x2="30" y2="33"/>
+      <rect x="28" y="34" width="4" height="2"/>
     </g>
-    <g stroke="${pal.sepia}" stroke-width="1">
-      <line x1="28.75" y1="26.75" x2="25.36" y2="23.36"/>
-      <line x1="32.75" y1="26.75" x2="27.31" y2="21.32"/>
-      <line x1="34.9" y1="24.9" x2="31.25" y2="21.25"/>
-    </g>
-    <circle cx="30.25" cy="29.5" r="1.2" fill="${pal.sepia}" stroke="none"/>
   `);
 }
 
-// Ephemeris — an orbital construction, 220x100 at (x, y): planet on broken
-// axes, near arc solid and far arc dashed, spacecraft diamond, the true
-// anomaly under measurement. The drawn ellipse (80x28) has e = 0.94; the
-// constructed radius sits 26 degrees off the major axis — both annotations
-// measure the figure itself.
-function orbit(x, y, pal) {
+// AI systems — a model core joining incoming signals to branching outputs.
+function aiSystems(x, y, pal) {
   return `<g transform="translate(${x} ${y}) scale(1.12)" fill="none" stroke-linecap="round" stroke-linejoin="round">
     <g stroke="${pal.construction}" stroke-width="1">
-      <line x1="20" y1="52" x2="91" y2="52" stroke-dasharray="2.5 3"/>
-      <line x1="119" y1="52" x2="190" y2="52" stroke-dasharray="2.5 3"/>
-      <line x1="105" y1="19" x2="105" y2="38" stroke-dasharray="2.5 3"/>
-      <line x1="105" y1="66" x2="105" y2="81" stroke-dasharray="2.5 3"/>
-      <line x1="116.2" y1="57.6" x2="148" y2="73.4"/>
-    </g>
-    <g stroke="${pal.sepia}" stroke-width="1">
-      <line x1="25" y1="49.8" x2="25" y2="54.2"/>
-      <line x1="185" y1="49.8" x2="185" y2="54.2"/>
-      <line x1="94.3" y1="48" x2="94.9" y2="56"/>
-      <line x1="97.2" y1="47" x2="98" y2="61"/>
-      <line x1="100.2" y1="50" x2="101" y2="62.5"/>
-      <line x1="103.2" y1="54" x2="103.8" y2="63"/>
-      <path d="M 127 52 A 22 22 0 0 1 124.7 61.8"/>
+      <line x1="28" y1="52" x2="192" y2="52" stroke-dasharray="2 4"/>
+      <line x1="105" y1="24" x2="105" y2="80" stroke-dasharray="2 4"/>
+      <path d="M 75 40 L 83 46 M 75 64 L 83 58"/>
+      <path d="M 127 46 L 137 40 M 127 58 L 137 64"/>
     </g>
     <g stroke="${pal.sepia}" stroke-width="1.1">
-      <path d="M 29.8 42.4 A 80 28 0 1 0 180.2 42.4"/>
-      <path d="M 29.8 42.4 A 80 28 0 0 1 180.2 42.4" stroke-dasharray="4 3.5"/>
-      <circle cx="105" cy="52" r="12"/>
-      <path d="M 150.9 72.3 L 153.5 74.9 L 150.9 77.5 L 148.3 74.9 Z"/>
+      <path d="M 38 34 H 56 L 74 46 H 87"/>
+      <path d="M 38 70 H 56 L 74 58 H 87"/>
+      <rect x="87" y="34" width="36" height="36" rx="8"/>
+      <path d="M 123 52 H 145 L 166 36 H 171"/>
+      <path d="M 123 52 H 145 L 166 68 H 171"/>
     </g>
-    <circle cx="105" cy="52" r="1" fill="${pal.sepia}" stroke="none"/>
-    <text x="135" y="66" font-family="JetBrains Mono" font-size="8.5" fill="${pal.sepia}" stroke="none">26&#176;</text>
-    <text x="49" y="47.5" font-family="JetBrains Mono" font-size="8.5" fill="${pal.sepia}" stroke="none">e = 0.94</text>
+    <g stroke="${pal.sepia}" stroke-width="1">
+      <line x1="78" y1="44.6" x2="82" y2="46"/>
+      <line x1="78" y1="59.4" x2="82" y2="58"/>
+      <line x1="164" y1="36.8" x2="167" y2="36"/>
+      <line x1="164" y1="67.2" x2="167" y2="68"/>
+      <line x1="98" y1="45" x2="105" y2="52"/>
+      <line x1="112" y1="45" x2="105" y2="52"/>
+      <line x1="98" y1="59" x2="105" y2="52"/>
+      <line x1="112" y1="59" x2="105" y2="52"/>
+      <circle cx="38" cy="34" r="5"/>
+      <circle cx="38" cy="70" r="5"/>
+      <circle cx="176" cy="34" r="5"/>
+      <circle cx="176" cy="70" r="5"/>
+      <circle cx="98" cy="45" r="2"/>
+      <circle cx="112" cy="45" r="2"/>
+      <circle cx="98" cy="59" r="2"/>
+      <circle cx="112" cy="59" r="2"/>
+    </g>
+    <circle cx="105" cy="52" r="3" fill="${pal.sepia}" stroke="none"/>
   </g>`;
 }
 
@@ -190,6 +152,6 @@ function cornerMarks(w, h, pal) {
   </g>`;
 }
 
-const EMBLEMS = { signal, grid, folio, tesseract };
+const EMBLEMS = { workflow, platform, paperAssistant, automation };
 
-module.exports = { EMBLEMS, orbit, cornerMarks };
+module.exports = { EMBLEMS, aiSystems, cornerMarks };
