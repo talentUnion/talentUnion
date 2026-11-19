@@ -7,18 +7,13 @@ const readme = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
 const cfg = loadConfig();
 const slices = renderCodexSlices(cfg, [], { embedFonts: false });
 
-test('README lays out every slice in both themes with project entries in a table', () => {
+test('README stacks every slice in both themes with the float trick', () => {
   for (const s of slices) {
     expect(readme).toContain(`srcset="assets/codex-${s.key}-dark.svg"`);
     expect(readme).toContain(`src="assets/codex-${s.key}-light.svg"`);
   }
   const floats = readme.match(/align="left" width="100%"/g) || [];
-  expect(floats).toHaveLength(slices.length - cfg.projects.length);
-  expect(readme).toContain('<table>');
-  expect(readme).toContain('<tr>');
-  expect(readme).toContain('</table>');
-  const projectWidths = readme.match(/assets\/codex-work-\d-light\.svg" width="100%"/g) || [];
-  expect(projectWidths).toHaveLength(cfg.projects.length);
+  expect(floats).toHaveLength(slices.length);
   expect(readme).toContain('media="(prefers-color-scheme: dark)"');
 });
 

@@ -42,6 +42,27 @@ test('generate keeps existing outputs when the fetch fails', async () => {
   }
 });
 
+test('generate removes stale project emblems offline without losing cached activity', async () => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'assets-'));
+  const cfg = loadConfig();
+  for (const f of expectedFiles(cfg)) {
+    fs.writeFileSync(path.join(out, f), `<svg>${cfg.name.toUpperCase()} OLD-${f}</svg>`);
+  }
+  const plate = path.join(out, FILES.light);
+  fs.writeFileSync(
+    plate,
+    `<svg>${cfg.name.toUpperCase()} ACTIVITY <g transform="translate(41 556)"><g>OLD SYMBOL</g></g> END</svg>`,
+  );
+
+  await generate({ cfg, outDir: out, token: 't', fetchWeeks: async () => { throw new Error('down'); } });
+
+  const updated = fs.readFileSync(plate, 'utf8');
+  expect(updated).toContain('ACTIVITY');
+  expect(updated).toContain('END');
+  expect(updated).not.toContain('translate(41');
+  expect(updated).not.toContain('OLD SYMBOL');
+});
+
 test('generate refreshes a stale profile offline when the contribution fetch fails', async () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'assets-'));
   const cfg = loadConfig();

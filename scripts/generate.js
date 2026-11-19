@@ -18,6 +18,34 @@ function write(outDir, file, svg) {
   fs.writeFileSync(path.join(outDir, file), svg, 'utf8');
 }
 
+function removeProjectEmblems(svg) {
+  const openingTag = /<g\b[^>]*\btransform="translate\(41 [^"]*"[^>]*>/;
+  let result = svg;
+  let match = openingTag.exec(result);
+  while (match) {
+    let depth = 1;
+    const tags = /<\/?g\b[^>]*>/g;
+    tags.lastIndex = match.index + match[0].length;
+    let tag;
+    let end = -1;
+    while ((tag = tags.exec(result))) {
+      if (tag[0].startsWith('</')) {
+        depth -= 1;
+        if (depth === 0) {
+          end = tags.lastIndex;
+          break;
+        }
+      } else if (!tag[0].endsWith('/>')) {
+        depth += 1;
+      }
+    }
+    if (end < 0) throw new Error('Unclosed project emblem group in cached SVG');
+    result = result.slice(0, match.index) + result.slice(end);
+    match = openingTag.exec(result);
+  }
+  return result;
+}
+
 async function generate({ cfg, outDir, token, fetchWeeks }) {
   fs.mkdirSync(outDir, { recursive: true });
 
@@ -39,6 +67,19 @@ async function generate({ cfg, outDir, token, fetchWeeks }) {
         fs.readFileSync(path.join(outDir, f), 'utf8').includes(currentName)
       ));
       if (profileIsCurrent) {
+        const cached = expected.map((file) => [
+          file,
+          fs.readFileSync(path.join(outDir, file), 'utf8'),
+        ]);
+        const staleEmblems = cached.some(([, svg]) => /transform="translate\(41 /.test(svg));
+        if (staleEmblems) {
+          for (const [file, svg] of cached) {
+            const currentSvg = removeProjectEmblems(svg);
+            if (currentSvg !== svg) write(outDir, file, currentSvg);
+          }
+          console.warn(`Contribution fetch failed (${e.message}); removed stale project emblems and kept cached activity`);
+          return;
+        }
         console.warn(`Contribution fetch failed (${e.message}); keeping existing plates and slices`);
         return;
       }

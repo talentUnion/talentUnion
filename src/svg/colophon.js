@@ -2,7 +2,7 @@ const { fontDefs } = require('../fonts');
 const { escapeXml } = require('./xml');
 const { measureSerif500, measureMono } = require('./metrics');
 const { aggregateWeeks, rangeCaption } = require('../data/weekly');
-const { EMBLEMS, aiSystems, cornerMarks } = require('./diagrams');
+const { aiSystems, cornerMarks } = require('./diagrams');
 
 // One plate, three inks: text ink, a sepia drawing ink for the figures, and
 // rubric red reserved for typography. The dark paper is deliberately warmer
@@ -86,8 +86,6 @@ function renderContents(cfg, pal) {
     const nameEnd = 140 + measureSerif500(p.name, 19);
     const leaderStart = Math.round(nameEnd + 12);
     const leaderEnd = Math.round(TEXT_R - measureMono(detail, 12.5) - 14);
-    const emblem = EMBLEMS[p.emblem];
-    if (emblem) parts.push(emblem(71, y + 6, pal));
     parts.push(serif(122, y, 14, pal.rubric, numeral, 'text-anchor="end" font-weight="500"'));
     parts.push(serif(140, y, 19, pal.ink, escapeXml(p.name), 'font-weight="500"'));
     if (leaderStart + 20 < leaderEnd) {
